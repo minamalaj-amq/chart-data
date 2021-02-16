@@ -1,25 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react'
+import axios from 'axios'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import './App.css'
+import ToggleRegions from './components/ToggleRegions'
+
+export default class App extends Component { 
+
+    state = { 
+        fetchedChartData: []
+    }
+     
+    async componentDidMount() { 
+        return await axios.get("https://1c3e10hfy8.execute-api.eu-west-1.amazonaws.com/staging/ModelRSalesEvolution")
+        .then(resp => this.setState({fetchedChartData: resp.data}))
+        .catch(err => console.log(err))
+    }
+
+    render() { 
+        const fetchedChartData = this.state.fetchedChartData
+
+        return (
+            <ToggleRegions 
+            fetchedChartData={fetchedChartData}
+            />
+        )
+    }
 }
-
-export default App;
